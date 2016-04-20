@@ -13,7 +13,7 @@ baseurl: "/SaladJack.github.io"         # for example, '/blog' if your blog host
 # SNS settings
 RSS: false
 weibo_username:     tianhaotianhao
-zhihu_username:     沙律酱
+zhihu_username:     sha-lu-jiang
 github_username:    SaladJack
 #twitter_username:  huxpro
 facebook_username:  章天豪
@@ -82,19 +82,10 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "Hux Blog",
-        href: "http://huangxuan.me"
+        title: "我儿子",
+        href: "http://www.baidu.com"
     },{
-        title: "Foo",
-        href: "#"
-    },{
-        title: "Bar",
-        href: "#"
-    },{
-        title: "Example Friends",
-        href: "#"
-    },{
-        title: "It helps SEO",
-        href: "#"
+        title: "我爸爸",
+        href: "http://www.google.com"
     }
 ]
