@@ -1,22 +1,22 @@
 # Site settings
 title: Your Blog
-SEOTitle: 你的博客 | Your Blog
+SEOTitle: 你的博客 | SaladJack Blog
 header-img: img/home-bg.jpg
 email: huxpro@gmail.com
-description: ""
+description: "Cool Blog"
 keyword: ""
-url: "http://huangxuan.me"              # your host, for absolute URL
-baseurl: "/huxblog-boilerplate"         # for example, '/blog' if your blog hosted on 'host/blog'
+url: "http://SaladJack.github.io"              # your host, for absolute URL
+baseurl: "/SaladJack.github.io"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
 # SNS settings
 RSS: false
-weibo_username:     huxpro
-zhihu_username:     huxpro
-github_username:    huxpro
+weibo_username:     只是一头驴
+zhihu_username:     SaladJack
+github_username:    SaladJack
 #twitter_username:  huxpro
-facebook_username:  huxpro
+facebook_username:  章天豪
 
 
 
