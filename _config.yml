@@ -1,5 +1,5 @@
 # Site settings
-title: Your Blog
+title: SB Blog
 SEOTitle: 你的博客 | SaladJack Blog
 header-img: img/home-bg.jpg
 email: huxpro@gmail.com
@@ -12,8 +12,8 @@ baseurl: "/SaladJack.github.io"         # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: false
-weibo_username:     只是一头驴
-zhihu_username:     SaladJack
+weibo_username:     tianhaotianhao
+zhihu_username:     沙律酱
 github_username:    SaladJack
 #twitter_username:  huxpro
 facebook_username:  章天豪
