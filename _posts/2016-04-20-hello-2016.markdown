@@ -67,7 +67,7 @@ Theme 的 CSS 是基于 Bootstrap 定制的，看得不爽的地方直接在 Les
 
 第二天考虑中文字体的渲染，fork 了 [Type is Beautiful](http://www.typeisbeautiful.com/) 的 `font` CSS，调整了字号，适配了 Win 的渣渲染，中英文混排效果好多了。
 
-##后记
+## 后记
 这个Blog多以技术文为主，无聊的时候可能也会走一下文艺路线。
 
 如果你恰好逛到了这里，可以到我的[Github主页](https://github.com/SaladJack)查看更多的rep，如果对你有帮助的话帮忙给个star呗(笑。
