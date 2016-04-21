@@ -6,7 +6,7 @@ email: zthscut@gmail.com
 description: "Cool Blog"
 keyword: ""
 url: "http://saladjack.cn"              # your host, for absolute URL
-baseurl: "/saladjack.cn"         # for example, '/blog' if your blog hosted on 'host/blog'
+baseurl: "/"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
