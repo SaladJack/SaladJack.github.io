@@ -9,6 +9,8 @@ tags:
     - Android
     - 翻译
 ---
+
+
 ## 高效加载大图片
 Android在加载大图片时，由于程序占用大量内存，内存不足时很容易发生OOM(OutOfMemory)异常。
 
