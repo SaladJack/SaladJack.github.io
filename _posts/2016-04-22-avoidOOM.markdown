@@ -103,16 +103,16 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
-![java-javascript](/img/in-post/post-avoidOOM/test0)
+![java-javascript](/img/in-post/post-avoidOOM/test0.png)
 <small class="img-hint">有压缩图片的结果</small>
 
-![java-javascript](/img/in-post/post-avoidOOM/test1)
+![java-javascript](/img/in-post/post-avoidOOM/test1.png)
 <small class="img-hint">无压缩图片的结果</small>
 
 我们可以发现在有压缩图片的情况时界面正常显示，而在无压缩图片的情况时，程序发生错误。
 
 我们再看看编译器报的错误
-![java-javascript](/img/in-post/post-avoidOOM/result)
+![java-javascript](/img/in-post/post-avoidOOM/result.png)
 <small class="img-hint">程序发生了OOM异常</small>
 
 我们发现程序发生OutOfMemoryError异常！这说明由于读取图片时占用内存过大，导致应用无法分配内存，这充分说明了研究图片压缩的重要性！
