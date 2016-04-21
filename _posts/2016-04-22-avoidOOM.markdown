@@ -2,7 +2,7 @@
 layout:     post
 title:      "Android有效加载大图、多图解决方案，有效避免OOM(1)"
 subtitle:   "Android加载图片"
-date:       2016-04-22 2:49:00
+date:       2016-04-22
 author:     "SaladJack"
 header-img: "img/post-bg-unix-linux.jpg"
 tags:
