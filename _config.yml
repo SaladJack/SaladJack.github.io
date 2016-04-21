@@ -2,11 +2,11 @@
 title: SaladJack Blog
 SEOTitle: 你的博客 | SaladJack Blog
 header-img: img/home-bg.jpg
-email: huxpro@gmail.com
+email: zthscut@gmail.com
 description: "Cool Blog"
 keyword: ""
-url: "http://SaladJack.github.io"              # your host, for absolute URL
-baseurl: "/SaladJack.github.io"         # for example, '/blog' if your blog hosted on 'host/blog'
+url: "http://saladjack.cn"              # your host, for absolute URL
+baseurl: "/saladjack.cn"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
@@ -16,7 +16,7 @@ weibo_username:     tianhaotianhao
 zhihu_username:     sha-lu-jiang
 github_username:    SaladJack
 #twitter_username:  huxpro
-facebook_username:  章天豪
+facebook_username:  zhangtianhao
 
 
 
