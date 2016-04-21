@@ -5,8 +5,8 @@ header-img: img/home-bg.jpg
 email: zthscut@gmail.com
 description: "Cool Blog"
 keyword: ""
-url: "http://saladjack.cn"              # your host, for absolute URL
-baseurl: "/"         # for example, '/blog' if your blog hosted on 'host/blog'
+url: "http://SaladJack.github.io"              # your host, for absolute URL
+baseurl: "/SaladJack.github.io"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
