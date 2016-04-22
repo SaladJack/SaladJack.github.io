@@ -18,7 +18,6 @@ Android中自带的内存缓存技术对那些大量占用内存的图片提供�
 下面是一个使用LruCache来缓存图片的例子
 
 
-
 ```java
 private LruCache<String, Bitmap> mMemoryCache;  
   

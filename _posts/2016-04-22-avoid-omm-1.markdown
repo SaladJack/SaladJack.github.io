@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
+下面为实验结果：
+
 ![java-javascript](/img/in-post/post-avoidOOM/test0.png)
 <small class="img-hint">有压缩图片的结果</small>
 
