@@ -2,7 +2,7 @@
 layout:     post
 title:      "Android有效加载大图、多图解决方案，有效避免OOM(2)"
 subtitle:   "Android加载图片"
-date:       2015-04-23
+date:       2016-04-22
 author:     "SaladJack"
 header-img: "img/post-avoid-omm-2.jpg"
 tags:
