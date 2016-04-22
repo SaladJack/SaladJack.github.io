@@ -1,14 +1,12 @@
 ---
 layout:     keynote
-title:      "Example Post using Keynote Layout"
-subtitle:   "Keynote: JavaScript Modularization Journey"
-iframe:     "http://huangxuan.me/js-module-7day/"
-date:       2015-07-09
-author:     "Hux"
-header-img: "img/post-bg-js-version.jpg"
+title:      "Android有效加载大图、多图解决方案，有效避免OOM(3)"
+subtitle:   "Android图片加载"
+date:       2014-04-23
+author:     "SaladJack"
+header-img: "img/post-avoid-omm-2.jpg"
 tags:
-    - 前端开发
-    - JavaScript
+    - Android
 ---
 
 
