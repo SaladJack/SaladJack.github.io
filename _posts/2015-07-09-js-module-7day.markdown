@@ -1,9 +1,8 @@
 ---
-layout:     keynote
+layout:     post
 title:      "Android有效加载大图、多图解决方案，有效避免OOM(2)"
 subtitle:   "Keynote: JavaScript Modularization Journey"
-iframe:     "http://huangxuan.me/js-module-7day/"
-date:       2016-04-23
+date:       2015-07-09
 author:     "SaladJack"
 header-img: "img/post-bg-js-version.jpg"
 tags:
