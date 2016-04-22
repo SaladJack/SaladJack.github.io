@@ -4,7 +4,7 @@ title:      "Android有效加载大图、多图解决方案，有效避免OOM(2)
 subtitle:   "Android加载图片"
 date:       2015-07-09
 author:     "SaladJack"
-header-img: "img/post-bg-js-version.jpg"
+header-img: "img/post-avoid-omm-2.jpg"
 tags:
     - 前端开发
     - JavaScript
