@@ -9,10 +9,10 @@ tags:
     - Android
 ---
 
-> 本文转自
+> 本文转自[jiang111](https://github.com/jiang111/awesome-android-tips)
 
 # awesome-android-tips
-Android tips [jiang111](https://github.com/jiang111/awesome-android-tips)
+Android tips 
 
 收集Android studio 常用的插件,请看这里:https://github.com/jiang111/awesome-androidstudio-plugins
 
