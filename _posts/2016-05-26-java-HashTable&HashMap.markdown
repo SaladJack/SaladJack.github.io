@@ -4,7 +4,7 @@ title:      "HashTable和HashMap的区别"
 subtitle:   "Java基础"
 date:       2016-05-26
 author:     "SaladJack"
-header-img: "img/in-post/java.png"
+header-img: "img/java.jpg"
 tags:
     - Java
 ---
