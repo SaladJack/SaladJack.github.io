@@ -2,7 +2,7 @@ encoding: UTF-8
 timezone: CN
 # Site settings
 title: SaladJack Blog
-SEOTitle: 你的博客 | SaladJack Blog
+SEOTitle: SaladJack Blog
 header-img: img/home-bg.jpg
 email: zthscut@gmail.com
 description: "Cool Blog"
@@ -84,10 +84,17 @@ featured-condition-size: 0              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "我儿子",
-        href: "http://www.baidu.com"
+        title: "Unsplash",
+        href: "https://unsplash.com/"
     },{
-        title: "我爸爸",
-        href: "http://www.google.com"
+        title: "Behance",
+        href: "http://www.behance.com"
+    },{
+        title: "Dribbble",
+        href: "http://www.dribbble.com"
+    },{
+        title: "Awwards",
+        href: "http://www.awwwards.com/"
     }
+	
 ]
