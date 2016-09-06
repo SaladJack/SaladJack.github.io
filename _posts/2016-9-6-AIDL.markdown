@@ -1,0 +1,310 @@
+---
+layout:     post
+title:      "AIDL之HelloWorld"
+subtitle:   "Android进阶"
+date:       2016-09-06
+author:     "SaladJack"
+header-img: "img/aidl-bg.jpg"
+tags:
+    - Android源码
+---
+
+## AIDL之Hello World
+
+Android系统中的进程之间不能共享内存，因此，需要提供一些机制在不同进程之间进行数据通信。而在Android中，通常使用AIDL来实现进程间数据传输。
+
+AIDL是基于Binder进行进程间的数据传递的，本文暂不谈其实现的原理，因为Binder在Android中非常复杂，所以本文只是简单介绍AIDL的简单使用
+
+## 要实现的Demo效果
+
+在EditText输入一段文字，点击show按钮，在TextView显示这段文字（当然我们是通过AIDL通信来实现这种效果）
+
+## 新建AIDL文件
+
+在AndroidStudio中直接新建一个叫IMyAIDL的ADIL文件，该文件便会自动放在与java目录同级的aidl目录下。IMyAIDL的代码如下：
+
+```java
+// IMyAIDL.aidl
+package com.example.administrator.aidldemo;
+
+// Declare any non-default types here with import statements
+
+interface IMyAIDL{
+    /**
+     * Demonstrates some basic types that you can use as parameters
+     * and return values in AIDL.
+     */
+    String getText(String text);
+}
+
+```
+
+这里的AIDL文件只申明了一个叫做getText的方法，用途我们后面再说
+
+## 编译生成AIDL配置文件
+
+只需`rebuild`一下，系统将会自动帮我们编译AIDL的编译文件，编译完成是你会看到一个叫做IMyAIDL.java的文件出现，其代码如下：
+
+```java
+/*
+ * This file is auto-generated.  DO NOT MODIFY.
+ * Original file: D:\\AndroidStudioProjects\\AIDLDemo\\app\\src\\main\\aidl\\com\\example\\administrator\\aidldemo\\IMyAIDL.aidl
+ */
+package com.example.administrator.aidldemo;
+// Declare any non-default types here with import statements
+
+public interface IMyAIDL extends android.os.IInterface
+{
+    /** Local-side IPC implementation stub class. */
+    public static abstract class Stub extends android.os.Binder implements com.example.administrator.aidldemo.IMyAIDL
+    {
+        private static final java.lang.String DESCRIPTOR = "com.example.administrator.aidldemo.IMyAIDL";
+        /** Construct the stub at attach it to the interface. */
+        public Stub()
+        {
+            this.attachInterface(this, DESCRIPTOR);
+        }
+        /**
+         * Cast an IBinder object into an com.example.administrator.aidldemo.IMyAIDL interface,
+         * generating a proxy if needed.
+         */
+        public static com.example.administrator.aidldemo.IMyAIDL asInterface(android.os.IBinder obj)
+        {
+            if ((obj==null)) {
+                return null;
+            }
+            android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
+            if (((iin!=null)&&(iin instanceof com.example.administrator.aidldemo.IMyAIDL))) {
+                return ((com.example.administrator.aidldemo.IMyAIDL)iin);
+            }
+            return new com.example.administrator.aidldemo.IMyAIDL.Stub.Proxy(obj);
+        }
+        @Override public android.os.IBinder asBinder()
+        {
+            return this;
+        }
+        @Override public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException
+        {
+            switch (code)
+            {
+                case INTERFACE_TRANSACTION:
+                {
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                }
+                case TRANSACTION_getText:
+                {
+                    data.enforceInterface(DESCRIPTOR);
+                    java.lang.String _arg0;
+                    _arg0 = data.readString();
+                    java.lang.String _result = this.getText(_arg0);
+                    reply.writeNoException();
+                    reply.writeString(_result);
+                    return true;
+                }
+            }
+            return super.onTransact(code, data, reply, flags);
+        }
+        private static class Proxy implements com.example.administrator.aidldemo.IMyAIDL
+        {
+            private android.os.IBinder mRemote;
+            Proxy(android.os.IBinder remote)
+            {
+                mRemote = remote;
+            }
+            @Override public android.os.IBinder asBinder()
+            {
+                return mRemote;
+            }
+            public java.lang.String getInterfaceDescriptor()
+            {
+                return DESCRIPTOR;
+            }
+            /**
+             * Demonstrates some basic types that you can use as parameters
+             * and return values in AIDL.
+             */
+            @Override public java.lang.String getText(java.lang.String text) throws android.os.RemoteException
+            {
+                android.os.Parcel _data = android.os.Parcel.obtain();
+                android.os.Parcel _reply = android.os.Parcel.obtain();
+                java.lang.String _result;
+                try {
+                    _data.writeInterfaceToken(DESCRIPTOR);
+                    _data.writeString(text);
+                    mRemote.transact(Stub.TRANSACTION_getText, _data, _reply, 0);
+                    _reply.readException();
+                    _result = _reply.readString();
+                }
+                finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+                return _result;
+            }
+        }
+        static final int TRANSACTION_getText = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
+    }
+    /**
+     * Demonstrates some basic types that you can use as parameters
+     * and return values in AIDL.
+     */
+    public java.lang.String getText(java.lang.String text) throws android.os.RemoteException;
+}
+```
+
+## IBinder
+我们新建一个叫做MyBinder.java的类，代码如下：
+
+```java
+package com.example.administrator.aidldemo;
+
+import android.os.RemoteException;
+
+
+public class MyBinder extends IMyAIDL.Stub {
+    @Override
+    public String getText(String text) throws RemoteException {
+        return text + "   (from Server)";
+    }
+}
+
+```
+
+
+## Service
+
+我们新建一个叫做MyService.java的类
+
+```java
+package com.example.administrator.aidldemo;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
+
+public class MyService extends Service {
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return new MyBinder();
+    }
+}
+
+```
+
+## AndroidManifest配置
+
+在AndroidManifest中我们为MyService新建一个进程，配置如下：
+
+```xml
+ <service android:name=".MyService"
+            android:process=":MyService"/>
+```
+
+这里我们为MyService这个服务类新建了一个进程名为“包名+:Myservice”的进程，而应用的主进程的默认进程名即为包名，这样我们就新建了两个进程。
+
+## MainActivity
+这个Demo只有一个Activity，其代码如下：
+
+```java
+package com.example.administrator.aidldemo;
+
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    public IMyAIDL mBinder;
+    Button show;
+    EditText et;
+    TextView tv;
+    private ServiceConnection conn = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mBinder = IMyAIDL.Stub.asInterface(iBinder);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        show = (Button) findViewById(R.id.show);
+        et = (EditText) findViewById(R.id.et);
+        tv = (TextView)findViewById(R.id.tv);
+       bindService(new Intent(this,MyService.class), conn,BIND_AUTO_CREATE);
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (et.getText() != null)
+                    tv.setText(mBinder.getText(et.getText().toString()));
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+      );
+    }
+}
+
+```
+
+这里只是简单的调用了绑定服务的功能，然后调用了服务返回的IBinder中的getText方法。但值得注意的是这一段代码：
+
+```java
+mBinder = IMyAIDL.Stub.asInterface(iBinder);
+```
+在单进程的开发中,我们只需将iBinder强转型就可以了，如：
+
+```java
+mBinder = (MyBinder) iBinder;
+```
+
+但现在是双进程。进程间是不公用内存的，所以在MainActivity所在的进程中,它不知道MyBinder的存在，万一这样调用将会发生如下错误：
+
+```
+java.lang.ClassCastException: android.io.BinderProxy cannot be cast to MyBinder
+```
+
+而事实上当Service与调用它的Client对象（这里就是MainActivity）处于不同进程时，onServiceConnected中返回给我们的参数iBinder是属于一个BinderProxy的代理类，它不是我们真正想要从Service获得的对象（这里还是因为进程间不共享内存的问题），可以想象成是我们想要获得的对象的“山寨”；而处于同一进程的时候，返回的即是我们想要的对象，直接调用即可。
+
+## 运行程序
+我们运行程序，在EditText写上hello world,点击show按钮，结果如下图所示：
+
+
+![java-javascript](/img/in-post/post-aidl/aidl-demo.jpg)
+
+
+
+可以看到Demo效果已经实现
+
+也许在App上还比较难以看出来是进程间的通信，其实我们只需要执行如下命令便可查看该App所执行的进程情况:
+
+```
+adb shell ps | grep com.example.administrator.aidldemo
+```
+
+之后我们便能看到如下结果：
+
+
+![java-javascript](/img/in-post/post-aidl/aidl-process.jpg)
+
+很明显可以看到该App拥有两个进程，其中一个是我们的主进程，另一个后缀为:MyService便是我们的MyService所在的进程。
+
