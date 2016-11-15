@@ -1,8 +1,6 @@
 ---
 layout:     post
 title:      "LruCache源码解析"
-subtitle:   "Android源码"
-date:       2016-10-12
 author:     "SaladJack"
 header-img: "img/aidl-bg.jpg"
 tags:

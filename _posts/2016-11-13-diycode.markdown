@@ -1,0 +1,57 @@
+---
+layout:     post
+title:      "Diycode代码艺术技术沙龙|广州站小结"
+tags:
+    - Android
+---
+
+
+
+这周六在酷狗参加了Diycode的Android技术沙龙，见到了Tinker作者，收获很大，在此对各个专题做点小结。
+
+## Android应用程序内存管理优化 - 纪喜才
+  - 在AS中可过滤出Dalvik或者ART的GC日志
+
+![](http://ww1.sinaimg.cn/large/61340919jw1f9qgpxocrbj20qo04utbk.jpg)
+
+ - [查看Android那些重要Log](https://github.com/D-clock/Doc/blob/master/Android/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/01_Android%E7%B3%BB%E7%BB%9F%E9%82%A3%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84LOG.md)
+  - com.xxxx.xxxx D/dalvikvm: GC_CONCURRENT freed 2049K, 65% free 3571K/9991K, external 4703K/5261K, paused 2ms+2ms total 143.522ms
+  - packagename D/dalvikvm: GC_Reason Amount_freed, Heap_stats, External_memory_stats, Pause_time Total_time
+  - GC_FOR_ALLOC：以同步的方式进行，对帧率的影响最为明显(见下第二张图)
+![](http://ww4.sinaimg.cn/large/61340919jw1f9qgv7xphqj20ih078wg0.jpg)
+![GC_FOR_ALLOC：以同步的方式进行，对帧率的影响最为明显](http://ww1.sinaimg.cn/large/61340919jw1f9qgvzjl3gj20if065jsx.jpg)
+
+- oom_adj的值越高，优先级越低，越容易在系统被回收
+- adb shell dumpsys meminfo packagename 查看内存使用情况
+- 多进程应用需要避免Application onCreate多次执行引起的重复初始化
+- 利用Activity.onTrimMemory (int level)
+- 小心未关闭的Dialog，在Activity或者Fragment销毁时记得先dismiss
+- 匿名内部类和非静态内部类泄漏，用静态外部类和弱引用方式取而代之
+- WebView造成内存泄漏，将WebView承载到其它独立的进程
+
+## Android动态更新 - 黄铭志
+- 只要保证插件使用的R文件和映射表的ids 跟宿主的都不相同，就可解决资源冲突问题。
+- 针对插件和宿主相同资源，把插件R.java的资源id修改成宿主的id，删除插件映射表中对应资源，插件运行时就可访问宿主资源。
+- 最后根据相同id把插件上的drawable、layout、style等文件移除。
+- 各个项目无法单独混淆原因：
+1）插件和宿主公共库之间并没有固定接口，单独混淆原来直接关联调用的方法就会被混淆移除掉。
+2）宿主公共库的final静态变量混淆后也会消失。
+- 资源id保持方法：
+1）宿主R.java的会生成ids.xml和public.xml，里面有存储id的信息
+2）下次编译把ids.xml和public.xml放到宿主的/res/value目录下编译可保持id不变。
+![](http://ww2.sinaimg.cn/large/61340919gw1f9t4u80adoj20mn05ggpk.jpg)
+
+## Android热补丁的现状与发展 - 张绍文
+简单介绍发展和各种框架的优缺点对比，原理及适配都很复杂，然而水平太渣听得太吃力，待水平提高再回来填坑=。=
+
+#聊聊Android安全那点事 - 李纪钢
+- 完整性校验：检查classex.dex、apk的完整性，最好将哈希值存到服务器
+![](http://ww2.sinaimg.cn/large/61340919gw1f9t526cbdvj20f70iwaba.jpg)
+- 防进程注入：防止ptrace进行so注入，并hook任意函数
+- HTTPS = HTTP + SSL/TLS
+- HTTP/2.0也只支持HTTPS
+- 网络传输需加密：MD5、加盐MD5、HMAC、AES、RSA
+- 数据库保存：加盐MD5，盐值和MD5分开保存
+- 密钥的加密：保存到SharedPreferences、硬编码到代码中、加密保存到配置文件中、NDK开发，放在so文件，加解密操作都在so文件，并添加签名验证
+
+

@@ -1,12 +1,9 @@
 ---
 layout:     post
 title:      "AIDL之HelloWorld"
-subtitle:   "Android进阶"
-date:       2016-09-06
-author:     "SaladJack"
 header-img: "img/aidl-bg.jpg"
 tags:
-    - Android源码
+    - Android
 ---
 
 ## AIDL之Hello World
