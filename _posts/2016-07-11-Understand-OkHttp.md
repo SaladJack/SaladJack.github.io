@@ -4,6 +4,7 @@ title: OkHttp源码解析
 tags:
     - Android源码
 ---
+> 本文转自Paisy
 
 安卓开发领域，很多重要的问题都有了很好的开源解决方案，例如网络请求 OkHttp + Retrofit 简直就是不二之选。“[我们不重复造轮子不表示我们不需要知道轮子该怎么造及如何更好的造！](https://github.com/android-cn/android-open-project-analysis#我们不重复造轮子不表示我们不需要知道轮子该怎么造及如何更好的造){:target="_blank"}”，在用了这些好轮子将近两年之后，现在是时候拆开轮子一探究竟了。本文基于 [OkHttp 截至 2016.7.11 的最新源码](https://github.com/square/okhttp/tree/8510d646bdb97321dcc7206d8e42b8179810396d){:target="_blank"}对其进行了详细分析。
 
@@ -339,3 +340,5 @@ OkHttp 还有很多细节部分没有在本文展开，例如 HTTP2/HTTPS 的支
 + `OkHttpClient` 实现 `Call.Factory`，负责为 `Request` 创建 `Call`；
 + `RealCall` 为具体的 `Call` 实现，其 `enqueue()` 异步接口通过 `Dispatcher` 利用 `ExecutorService` 实现，而最终进行网络请求时和同步 `execute()` 接口一致，都是通过 `getResponseWithInterceptorChain()` 函数实现；
 + `getResponseWithInterceptorChain()` 中利用 `Interceptor` 链条，分层实现缓存、透明压缩、网络 IO 等功能；
+
+

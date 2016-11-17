@@ -4,6 +4,7 @@ title: RxJava解析
 tags:
     - Android源码
 ---
+> 本文转自Paisy
 
 [RxJava](https://github.com/ReactiveX/RxJava/){:target="_blank"} 这个项目已经持续四年半了，第一个 commit 是在 2012 年 3 月 18 号。我从 14 年 11 月份开始使用 RxJava，应该算是比较早的，将近两年过去了，现在 RxJava 1.x 版本已经进入稳定期，2.0 版本也已经进入了 RC 阶段。
 

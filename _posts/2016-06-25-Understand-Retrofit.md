@@ -5,6 +5,9 @@ tags:
     - Android源码
 ---
 
+> 本文转自Paisy
+
+
 安卓开发领域，很多重要的问题都有了很好的开源解决方案，例如网络请求 OkHttp + Retrofit 简直就是不二之选。“[我们不重复造轮子不表示我们不需要知道轮子该怎么造及如何更好的造！](https://github.com/android-cn/android-open-project-analysis#我们不重复造轮子不表示我们不需要知道轮子该怎么造及如何更好的造){:target="_blank"}”，在用了这些好轮子将近两年之后，现在是时候拆开轮子一探究竟了。本文基于 [Retrofit 截至 2016.6.23 的最新源码](https://github.com/square/retrofit/tree/5febe68b3c812a25f60d16e8faa74e39e87528a7){:target="_blank"}对其进行了详细分析。
 
 ## 1，整体思路
