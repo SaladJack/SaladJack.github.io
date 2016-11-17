@@ -84,17 +84,27 @@ featured-condition-size: 0              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "Unsplash",
-        href: "https://unsplash.com/"
+        title: "干货集中营",
+        href: "http://gank.io/"
     },{
-        title: "Behance",
-        href: "http://www.behance.com"
+        title: "diycode",
+        href: "http://www.diycode.cc/"
     },{
-        title: "Dribbble",
-        href: "http://www.dribbble.com"
+        title: "Medium",
+        href: "https://medium.com/google-developers"
     },{
-        title: "Awwards",
-        href: "http://www.awwwards.com/"
-    }
+        title: "Gityuan",
+        href: "http://gityuan.com/"
+    },{
+        title: "腾讯DevClub",
+        href: "http://dev.qq.com/"
+    },{
+        title: "乌云镜像",
+        href: "https://jiji262.github.io/wooyun_articles/"
+    },{
+        title: "看雪学院",
+        href: "http://www.pediy.com/"
+    },
+    
 	
 ]

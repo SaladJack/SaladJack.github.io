@@ -7,7 +7,7 @@ tags:
 
 
 
-这周六在酷狗参加了Diycode的Android技术沙龙，见到了Tinker作者，收获很大，在此对各个专题做点小结。
+> 这周六在酷狗参加了Diycode的Android技术沙龙，见到了Tinker作者，收获很大，在此对各个专题做点小结。
 
 ## Android应用程序内存管理优化 - 纪喜才
   - 在AS中可过滤出Dalvik或者ART的GC日志
@@ -44,7 +44,7 @@ tags:
 ## Android热补丁的现状与发展 - 张绍文
 简单介绍发展和各种框架的优缺点对比，原理及适配都很复杂，然而水平太渣听得太吃力，待水平提高再回来填坑=。=
 
-#聊聊Android安全那点事 - 李纪钢
+## 聊聊Android安全那点事 - 李纪钢
 - 完整性校验：检查classex.dex、apk的完整性，最好将哈希值存到服务器
 ![](http://ww2.sinaimg.cn/large/61340919gw1f9t526cbdvj20f70iwaba.jpg)
 - 防进程注入：防止ptrace进行so注入，并hook任意函数
