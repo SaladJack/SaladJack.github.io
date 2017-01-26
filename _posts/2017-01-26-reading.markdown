@@ -1,0 +1,51 @@
+---
+layout:     post
+title:      "最近读过的博客"
+tags:
+    - 阅读
+---
+
+>  整理研读过的博客，以便日后回顾
+
+##Java
+
+- [Java并发编程：深入剖析ThreadLocal](http://www.cnblogs.com/dolphin0520/p/3920407.html)
+
+- [Java并发编程：线程池的使用](http://www.cnblogs.com/dolphin0520/p/3932921.html)
+
+- [Java NIO：浅析I/O模型](http://www.cnblogs.com/dolphin0520/p/3916526.html)
+
+- [浅析Java中的final关键字](http://www.cnblogs.com/dolphin0520/p/3736238.html)
+
+
+
+- --
+
+##Android
+
+- [你真的了解AsyncTask？](http://www.jianshu.com/p/a8b1861f2efc)
+
+- [Android性能优化之虚拟机调优](http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap)
+
+- [浅谈Service Manager成为Android进程间通信（IPC）机制Binder守护进程之路](http://blog.csdn.net/luoshengyang/article/details/6621566)
+
+- [闲聊阿里加固（一）](https://jaq.alibaba.com/community/art/show?articleid=600)
+
+- --
+
+##其它
+
+- [理解inode](http://www.ruanyifeng.com/blog/2011/12/inode.html)
+
+- [MySQL索引原理及慢查询优化](http://tech.meituan.com/mysql-index.html)
+
+
+
+
+  
+  
+  
+
+
+
+
