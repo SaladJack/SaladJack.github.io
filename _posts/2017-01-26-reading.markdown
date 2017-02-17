@@ -7,7 +7,7 @@ tags:
 
 >  整理研读过的博客，以便日后回顾
 
-##Java
+## Java
 
 - [Java并发编程：深入剖析ThreadLocal](http://www.cnblogs.com/dolphin0520/p/3920407.html)
 
@@ -21,7 +21,7 @@ tags:
 
 - --
 
-##Android
+## Android
 
 - [你真的了解AsyncTask？](http://www.jianshu.com/p/a8b1861f2efc)
 
@@ -33,7 +33,7 @@ tags:
 
 - --
 
-##其它
+## 其它
 
 - [理解inode](http://www.ruanyifeng.com/blog/2011/12/inode.html)
 

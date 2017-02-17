@@ -1,0 +1,58 @@
+---
+layout:     post
+title:      "IM的坑"
+tags:
+    - Android
+---
+
+>  总结做IM的时候遇到的坑和一些设计的思路
+
+### Client端
+- `handler.removeCallback(runnable)`只会remove掉在`MessageaQueue`中待运行的`runnable`，不会影响正在运行的`runnable`在类似心跳等周期发送的逻辑里，要停止发送需要一些状态变量来判断是否再触发`handler.postDelayed(runnable,KEEP_ALIVE_INTERVAL)`;
+
+- 用`PendingIntent`发广播时`flag`要注明为`PendingIntent.FLAG_UPDATE_CURRENT`，否则如果传0的话会造成取数据时，intent中的数据为空的问题，并且这个`flag`会复用`PendingIntent`  ，复用的时候用将里面的数据用新`intent`中的数据replace掉
+
+-  监听网络连接状态变化可以用`ConnectivityManager.CONNECTIVITY_ACTION`这个Action来注册receiver，但有坑，就是注册的时候也会发送该广播，具体原因见此： [深入分析Android监听网络变化的坑](http://blog.csdn.net/theone10211024/article/details/53510039)；还有从真正的网络状态改变到调用onReceive方法会有事件延迟，需要解决与自动重连机制的冲突
+
+- `DatagramSocket`里的`receive(DatagramPacket pack)`是阻塞的，侦听的时候不需要设置周期循环，一个`while(true)`即可
+
+- QoS接收方发给发送方的应答包失败的话，发送方需要重发QoS包，接收方这时要更新在已接收列表中重复QoS包的时间戳，并回一个“收到”应答包，本质上是一个“三次握手”
+
+- 项目里设计的“三次握手”的QoS机制：
+1.发送包，并将发送包加入到`发送队列`中  
+2.接收应答包，将收到的包存入`已接收队列`中（用于防重复）,并将包从`发送队列`中删除
+3.回应答包，表示“收到”应答包
+
+- 登录成功后停止自动重连，断网后要暂停QoS，并恢复自动重连
+
+- 登录成功后那一刻意味着与服务器成功通信，所以不必马上开始开启心跳，可等一个keepAlive在开始心跳机制
+
+- 停止心跳后记得开启掉线重连，不然很可能出现有网的时候客户端永远处于掉线的情况，除非自己手动重新登录
+
+### Server端
+
+- mina的`messageReceived(IoSession session, Object message)`回调是在io线程中执行的，为了提高性能，需切换线程，具体实现方法如下：在初始化mina的acceptor时启用线程池`acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(Executors.newCachedThreadPool()))`
+
+- mina默认的会话超时时间为60秒，要改成我们的`3 * KEEPA_LIVE_INTERVAL + 1`秒，即连续丢三次心跳包就判定客户端掉线，附加的1秒是考虑网络延时，具体做法如下:`acceptor.setSessionRecycler(new ExpiringSessionRecycler(3 * KEEP_ALIVE_INTERVAL + 1))`
+
+- 使用MyBatis操作数据库时，`dao`层对应的具体的数据库操作，即`xxxDao.xml`，  如果`resultype`为一个`JavaBean`类，则该`JavaBean`的属性名称不能出现下划线`"_"`，如`user_id`，否则MySQL查询的结果转化为`JavaBean`时会构造失败
+
+- `dao`层定义的方法形参如果用到字符串，需加上`@Param`才能在xml里使用，如`User queryUserByAccount(@Param("account") String account);`
+
+- `messageReceived(IoSession session, Object message)`中的`session`可获取客户端的ip地址、端口等信息，debug的时候别用`InetSocketAddress.getHostName()`获得主机名，非常耗时。`message`即为收到的数据，一个`message`转化为自定义的协议的过程如下：
+
+```java
+ @Override public void messageReceived(IoSession session, Object message) throws Exception{
+    if(message instance of IoBuffer){
+        IoBuffer buffer = (IoBuffer) message;
+        CharsetDecoder decoder = (Charset.forName("UTF-8")).newDecoder();
+        String json = buffer.getString(decoder);
+        Protocal protocal = new Gson().fromJson(json, Protocal.class);
+        //handle protocal received
+}
+```
+  
+
+
+
+

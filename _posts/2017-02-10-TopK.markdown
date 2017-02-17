@@ -1,0 +1,97 @@
+---
+layout:     post
+title:      "IM的坑"
+tags:
+    - 算法
+---
+
+>  TopK问题在网上大部分都只给了思路，但代码可读性大部分都比较差，
+
+
+可在[Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)上进行练习。
+
+下面给出具体的代码实现：
+
+#### 基于快排思想的实现
+
+
+```cpp
+int partition(vector<int>& nums,int low,int high){
+    int pivot = nums[low];
+    while(low < high){
+        while(low < high && nums[high] <= pivot) high--;
+        nums[low] = nums[high];
+        while(low < high && nums[low] >= pivot) low++;
+        nums[high] = nums[low];
+    }
+    nums[low] = pivot;//此时low==high
+    return low;
+}
+/**
+ * 在[low,high]内返回第k大的数
+ */
+int findKthLargest(vector<int>& nums,int k,int low,int high){
+    int pos = partition(nums, low, high);
+    int cnt = pos - low + 1;//[low,pos]元素个数
+    if(cnt == k) return nums[pos];
+    else if(cnt > k) return findKthLargest(nums, k, low, pos-1);
+    else return findKthLargest(nums, k-cnt, pos+1, high);
+}
+
+
+int findKthLargest(vector<int>& nums, int k) {
+    int n = (int) nums.size();
+    return findKthLargest(nums,k,0,n-1);
+}
+
+```
+
+
+#### 基于堆的实现
+
+```cpp
+void heapify(vector<int> &nums,int index,int size){
+    int left = index * 2 + 1;
+    int right = index * 2 + 2;
+    int minIndex = index;
+    while(left < size){
+        if(nums[left] < nums[minIndex])
+            minIndex = left;
+        if(right < size && nums[right] < nums[minIndex])
+            minIndex = right;
+        if(minIndex != index){
+            swap(nums[minIndex],nums[index]);
+            index = minIndex;
+            left = index * 2 + 1;
+            right = index * 2 + 2;
+        }
+        else
+            break;
+    }
+}
+
+void buildHeap(vector<int> &nums,int size){
+    for(int i = size / 2; i >= 0; --i)
+        heapify(nums,i,size);
+}
+
+int findKthLargest(vector<int>& nums, int k) {
+    int n = (int) nums.size();
+    vector<int> res(k);
+    for(int i = 0; i < k; ++i) res[i] = nums[i];
+    buildHeap(res, k);
+    for(int i = k; i < n; ++i){
+        if(nums[i] > res[0]){
+            res[0] = nums[i];
+            heapify(res, 0, k);
+        }
+        
+    }
+    return res[0];
+}
+```
+  
+
+
+
+
