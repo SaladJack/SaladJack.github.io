@@ -1,0 +1,125 @@
+---
+layout:     post
+title:      "View杂记"
+tags:
+    - Android
+---
+
+> 总结一下又多又杂的自定义View和自己的一些理解
+
+### View的事件体系
+
+- `View`的事件体系类似双亲委派协议，事件传输从顶元素点到底元素，然后再从底元素回到顶元素，两者都“短路”效应，但是这些相似之处当然还是有不同的地方，但这里不做深入对比。
+
+- 某个`View`一旦决定拦截，那么这一个事件序列都只能有它处理（如果事件序列能传递个它的话），并且它的`onInterceptTouchEvent`不会再调用。
+
+- 某个`View`一旦开始处理事件，如果它不消耗`ACTION_DOWN`事件（`onTouchEvent`返回了`false`）,那么同一事件序列的其他事件都不会再交给它来处理，并且事件将重新交给它的父元素去处理，即父元素的`onTouchEvent`会被调用。
+
+- `ViewGroup`的`onInterceptTouchEvent`方法默认返回`false`
+
+- `View`的`longClickable`属性默认为`false`,而`clickable`属性要看情况，`Button`的`clickable`默认为`true`，`TextView`的`clickable`默认为`false`。除非`View`是不可点击的（`clickable`和`longClickable`都为`false`），否则`View`的`onTouchEvent`默认都会消耗时间（返回`true`）。
+
+-  通过`requestDisallowInterceptTouchEvent`方法可以在子元素中干预父元素的事件分发过程，但是`ACTION_DOWN`事件除外。
+
+#### View的工作原理
+
+- `ViewRoot`对应于`ViewRootImpl`类，是连接`WindowManager`和`DecorView`的纽带。在`ActivityThread`中，当`Activity`对象被创建完毕后，会将`DecorView`添加到`Window`中，同时添加`ViewRootImpl`对象，并将这个对象与`DecorVIew`建立关联。 
+
+- `View`的三大绘制流程是从`ViewRoot`的`performTraversals`方法开始的。
+
+- `measure`确认了`View`的测量宽高，可通过`getMeasuredWidth`和`getMeasuredHeight`获得。
+
+- `layout`确认了`View`的最终宽高，可通过`getWidth`和`getHeight`获得。所以最好在`onLayout`方法或者`onSizeChanged`方法获取宽高（`onSizeChanged`会在宽高发生变化时在`layout`方法里调用。）
+
+- 大部分情况下测量宽高和最终宽高相同，除非在`layout`方法下做如下调用（不推荐），就会造成最终宽比测量宽大200px，最终高比测量高大100px：
+
+```java
+public void layout(int l, int t, int r, int b){
+    super.layout(l,t,r+200,b+100);
+}
+```
+
+- `MeasureSpec`为int型，它的高两位为`SpecMode`，`SpecMode`分为如下三种：
+ - **UNSPECIFIED** ：   父容器不对`View`有任何限制，一般用于系统内部，可不关心
+ - **EXVATLY**  ：对应于`LayoutParams`中的`match_parent`和具体的数值这种模式
+ - **AL_MOST**：对应于`LayoutParams`中的`wrap_content`
+
+- 重写`View`的`onMeasure`方法示例如下，300和500分别为自定义的默认宽高，`AT_MOST `既对应`wrap_content`，如果不对其进行区别处理，则得到的`xxxSpecSize`将是`parentSize`，即为父元素的大小，那么这跟`match_parent`没有区别。具体的`View`的`MeasureSpec`的创建规则见《Android艺术探索》P182
+
+```java
+ @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        if(widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST){
+            setMeasuredDimension(300,500);
+        }else if(widthSpecMode == MeasureSpec.AT_MOST){
+            setMeasuredDimension(300,heightSpecSize);
+        }else if(heightSpecMode == MeasureSpec.AT_MOST){
+            setMeasuredDimension(widthSpecSize,500);
+        } 
+}
+```
+
+- 重写`ViewGroup`的`onMeasure`方法示例如下
+
+```java
+ @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // 向childView传递viewgroup的MeasureSpec
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        int width = 0;
+        int height = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child.getVisibility() == GONE)
+                continue;
+           //set width and height with methods below
+           //child.getMeasureWidth()
+          //child.getMeasureHeight()
+        }
+
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        if(widthSpecMode == MeasureSpec.AT_MOST){
+            setMeasuredDimension(width,heightSpecSize); 
+        }else if(heightSpecMode == MeasureSpec.AT_MOST){
+            setMeasuredDimension(widthSpecSize,height);
+        }else{
+            setMeasuredDimension(width,height);
+        }   
+    }
+```
+
+- 上述`onMeasure`的实现严格来说还有问题，应该要考虑`padding`和`margin`
+
+- `View`的`measure`过程和`Activity`的生命周期方法不是同步执行的，尽量用`ViewTreeObserver`的方法获得宽高。
+
+- `draw`过程分为如下4步
+  - 绘制背景 background.draw(canvas)
+  - 绘制自己 （onDraw）
+  - 绘制children （dispatchDraw）
+  - 绘制装饰（onDrawScollBars）
+
+- `View`绘制过程的**传递**是通过`dispatchDraw``来实现的，`dispatchDraw`会变里调用所有子元素的`draw`方法。
+
+- `ViewGroup`默认开启`WILL_NOT_DRAW`标记位，表示当自定义的`ViewGroup`不具备绘制功能时，可以让系统进行相应的优化。TODO:具体怎么实现这个优化的？
+
+- `View`如果有线程或者动画，可以在`onDetachedFromWindow`里停止，否则可能会造成内存泄漏。
+
+- `TypeArray`对象用完记得调用`recycle`方法以便复用
+
+#### Drawable
+
+- 可通过`getIntrinsicWidth`和`getIntrinsicHeight`两个方法获取`Drawable`的**内部宽高**。但如果是一个颜色所组成的`Drawable`，它没有内部宽高的概念，调用两个方法都会返回`-1`，如果是一个图片，就返回实际图片的宽高。
+
+- `Drawable`没有大小概念，当用作`View`的背景时，`Drawable`会被拉伸至`View`的同等大小。只能用`getBounds`获得一个“结果型”的大小，一般来说它和`View`的尺寸相同。
+
+- 当自定义`Drawable`有固有大小时，最好重写`getIntrinsicWidth`和`getIntrinsicHeight`，因为它会影响到`View`的`wrap_content`布局。
+  
+
+
+
+
