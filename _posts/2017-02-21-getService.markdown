@@ -5,7 +5,7 @@ tags:
     - Android源码
 ---
 
-- **ServiceManagerProxy **
+- **ServiceManagerProxy**
 
 当某个Binder Server在启动时，会把自己的名称name与对应的Binder句柄值保存在ServiceManager中，调用者通常只知道Binder Server的名称，所以必须先向ServiceManager发起查询请求，就是getService(name)。
 
@@ -35,16 +35,21 @@ ServiceManager唤醒后，程序分为两条主线索。
 
 其二，发起getService请求的Binder Client在等待ServiceManager回复的过程中会进入休眠，知道被Binder驱动再次唤醒——它和ServiceManager一样也是在read中睡眠的，因而醒来后继续执行读取操作，这一次得到的就是ServiceManager对请求的执行结果。程序先把结果填充到reply这个Parcel中，然后通过层层返回到ServiceManagerProxy，在利用Parcel.readStrongBinder生成一个BpBinder，最终经过类型转换为IBinder对象后传给调用者。
 
+- **Client如何准确地访问到目标进程中的Binder Server**
+
+对于实名Binder Server，如WMS，当它利用addService来把自身注册到SM中时，会“路过”Binder驱动，而后者就会按计划把这一Binder对象链接到porc->nodes，以及target_proc->refs_by_desc和target_proc->refs_by_node中。在这一场景中，proc是系统服务进程，而target_proc则是SM。也就是说，SM中拥有了一个描述WMS的binder_node的引用。这样当一个Binder Client通过getService想SM发起查询时，SM就可以准确地告诉这个调用者它想访问的WMS节点所在的位置。
+
+而对于匿名Binder Server，如WMS的IWindowSession，
+，他是靠WMS来传递的：并且要等到Binder Client调用openSession时才真正地生成一个Session对象——这个对象作为reply结果值时会第一次“路过”Binder驱动——此时就会被记录到系统服务进程的proc->nodes中，并且target_proc（即ViewRootImpl所在进程）会有一个binder_ref指向这一binder_node节点。
+
 - **调用者**
 
 整个ServiceManager.getService()的大体流程分析完了。但对于调用者来说，得到的IBinder对象要先经过asInterface做一次包装，如在native层ServiceManager的BpBinder就被包装成了IServiceManager（实际上就是一个ServiceManagerProxy）。这么做的目的在于可以让应用程序更加方便的使用Service Manager提供的服务（其他Binder Server也类似）。
-
 
 ##### 附录1
 ![binder_ioctl支持的命令](http://ww1.sinaimg.cn/large/61340919ly1fcyg3qhx71j20pk08d41y)
 
 ![BINDER_WRITE_READ中支持的子命令](http://ww1.sinaimg.cn/large/61340919ly1fcyg4j35hnj20lf0p57bh)
-
 
 ##### 附录2
 
