@@ -427,7 +427,7 @@ STL内容虽然看起来很多，单独成书都不是问题（《STL源码剖�
 
 实现：
 
-[模拟Vector实现](https://github.com/linw7/Skill-Tree/blob/master/code/my_vector.cpp)
+[模拟Vector实现](https://gist.github.com/SaladJack/3dec40e8f094bd315fad080556ad333a)
 
 - 线性表，数组实现。
     - 支持随机访问。
@@ -440,7 +440,7 @@ STL内容虽然看起来很多，单独成书都不是问题（《STL源码剖�
 
 错误避免：
 
-[迭代器失效](https://github.com/linw7/Skill-Tree/blob/master/code/vector_iterator.cpp)
+[迭代器失效](https://gist.github.com/SaladJack/660e50ad6705b2b83118cc8c16599d45)
 
 - 插入元素
     - 尾后插入：size < capacity时，首迭代器不失效尾迭代实现（未重新分配空间），size == capacity时，所有迭代器均失效（需要重新分配空间）。
@@ -476,7 +476,7 @@ STL内容虽然看起来很多，单独成书都不是问题（《STL源码剖�
 
 实现：
 
-[RBTree实现](https://github.com/linw7/Skill-Tree/tree/master/code/RBTree)
+[RBTree实现](https://gist.github.com/SaladJack/3589760a635a1dd9b8a5c488e55bc34a)
 
 - 树状结构，RBTree实现。
     - 插入删除不需要数据复制。
